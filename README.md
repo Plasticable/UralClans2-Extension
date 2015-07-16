@@ -61,3 +61,5 @@ UralClans2.leader:
  VK: https://vk.com/ilya_evtukhov
  
  Facebook: https://www.facebook.com/Ilya.Evtukhov.23
+ 
+ Twitter: https://twitter.com/evtukhov_ilya
