@@ -1,7 +1,7 @@
 name: UralClans2
 main: ru.jampire.bukkit.uralclans2.Main
 author: Jampire (Appended Ilya_Evtukhov)
-version: 2.1
+version: 2.2
 depend: [WorldGuard, WorldEdit]
 commands:
     clan:

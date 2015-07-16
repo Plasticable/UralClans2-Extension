@@ -13,4 +13,5 @@ settings:
     min_symbols: 3
     default_max: 30
     max_upgrade: 50
+    cost: 100 #Cost of creating clan. Set 0 to disable.
     clan_regex: '[а-яА-Яa-zA-Z0-9]*'

@@ -103,8 +103,8 @@ ru:
     command_error25: '§4Указанная страница пуста.'
     command_error26: '§4Владелец клана не может покинуть его.'
     command_error27: '§4Клан не имеет дома.'
-    command_error28: '§4Удалить клановый дом может только лидер или модератор клана.'
-    command_error29: '§4Изменить клановый дом может только лидер или модератор клана.'
+    command_error28: '§4Удалить клановый дом может только.'
+    command_error29: '§4Изменить клановый дом может только.'
     command_error30: '§4Вы не можете установить клановый дом на этой территории.'
     command_error31: '§4Передать лидерство может только лидер клана.'
     command_error32: '§4Указанного игрока не существует.'
@@ -120,6 +120,7 @@ ru:
     command_error42: '§4На сервере еще нет кланов.'
     command_error43: '§4У вас нет прав на управление кланом.'
     command_error44: '§4Вы не имеете доступа к чату руководства.'
+    command_error45: '§4У вас недостаточно денег для создания клана.'
     command_msg_1: 'Объявление'
     command_msg_format: '§f[§b%s§f] [§b%s§f] %s§f: %s'
     command_broadcast_format: '§f[§b%s§f] §a%s'
@@ -230,8 +231,8 @@ en:
     command_error25: '§4Pointed page is empty.'
     command_error26: "§4Clan leader can't left from it."
     command_error27: '§4There is no clan home.'
-    command_error28: '§4Only clan leader or moderator can set clan home.'
-    command_error29: '§4Only clan leader or moderator can change clan home.'
+    command_error28: '§4Only clan leader can set clan home.'
+    command_error29: '§4Only clan leader change clan home.'
     command_error30: "§4You can't set clan home there."
     command_error31: '§4Only clan leader can giveaway his leadership.'
     command_error32: "§4Player doesn't exists."
@@ -247,6 +248,7 @@ en:
     command_error42: '§4There are not any clans on the server.'
     command_error43: '§4You have no rights to manage clan.'
     command_error44: '§4You do not have access to chat leadership.'
+    command_error45: '§4You have not enough money to create a Clan.'
     command_reload_1: '§aConfig files reloaded.'
     command_msg_1: 'Broadcast'
     command_msg_format: '§f[§b%s§f] [§b%s§f] %s§f: %s'

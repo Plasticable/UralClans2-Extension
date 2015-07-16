@@ -137,7 +137,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
          } else if(args.length <= 0) {
             return true;
          } else if(args[0].equalsIgnoreCase("create")) {
-            if(!sender.hasPermission("UralClans2.leader")) {
+			if(!sender.hasPermission("UralClans2.leader")) {
                sender.sendMessage(Lang.getMessage("command_error43"));
                return true;
             } else if(args.length == 1) {
@@ -159,6 +159,21 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                sender.sendMessage(Lang.getMessage("command_error6"));
                return true;
             } else {
+            	if (Main.config.getInt("settings.cost") != 0) {
+	            	try {
+						if(!Main.getEconomy().has(sender.getName(), (double)Main.config.getInt("settings.cost"))) {
+						    sender.sendMessage(Lang.getMessage("command_error45"));
+						    return true;
+						 }
+					} catch (Exception e) {
+						;
+					}
+	            	try {
+						Main.getEconomy().withdrawPlayer(sender.getName(), (double)Main.config.getInt("settings.cost"));
+					} catch (Exception e) {
+						;
+					}
+            	}
                userClan = Clan.create(args[1], sender.getName());
                userClan.broadcast(Lang.getMessage("clan_created", new Object[]{Clan.getClanByName(sender.getName()).getName()}));
                return true;
