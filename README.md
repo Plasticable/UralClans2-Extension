@@ -33,3 +33,8 @@
    - /clan delmoder [игрок] - Забрать права модератора клана (доступно лидеру клана).
    
 %сообщение - отправка сообщения в клановый чат
+
+Контакты:
+ Email: evtuhov2222@ya.ru
+ VK: https://vk.com/ilya_evtukhov
+ Facebook: https://www.facebook.com/Ilya.Evtukhov.23
