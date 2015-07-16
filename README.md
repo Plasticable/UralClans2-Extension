@@ -35,6 +35,8 @@
 %сообщение - отправка сообщения в клановый чат
 
 Контакты:
+
+
  Email: evtuhov2222@ya.ru
  
  VK: https://vk.com/ilya_evtukhov
