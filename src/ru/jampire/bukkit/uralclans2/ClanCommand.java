@@ -65,9 +65,6 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
 	               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_removehome"));
 	            }
 
-        	} else {
-                sender.sendMessage(Lang.getMessage("command_error43"));
-                return true;
         	}
 	        	
         	if(!sender.hasPermission("UralClans2.moder")) {
@@ -90,10 +87,8 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
 	            if(userClan != null && (userClan.hasLeader(user.getName()) || userClan.isModer(user.getName()))) {
 	               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_pvp"));
 	            }
-        	} else {
-	            sender.sendMessage(Lang.getMessage("command_error43"));
-	            return true;
         	}
+        	
             if(userClan != null) {
                sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_info"));
             }
