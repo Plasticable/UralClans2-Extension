@@ -61,7 +61,7 @@ public Clan(String name, String leader, ArrayList members, String world, double 
    }
 
    @SuppressWarnings("rawtypes")
-   public ArrayList getMembers() {
+public ArrayList getMembers() {
       return this.members;
    }
 
@@ -92,18 +92,13 @@ public Clan(String name, String leader, ArrayList members, String world, double 
    }
 
    @SuppressWarnings("rawtypes")
-   public void setMembers(ArrayList members) {
+public void setMembers(ArrayList members) {
       this.members = members;
    }
 
    public static Clan getClan(String clan) {
       return (Clan)clans.get(clan);
    }
-   
-   public static Clan getRClan(String clan) {
-	  return (Clan)clans.get(clan.replaceAll("&.", ""));
-   }
-
 
    @SuppressWarnings("rawtypes")
 public static Clan getClanByName(String player) {
@@ -186,12 +181,11 @@ public boolean isModer(String name) {
 
    @SuppressWarnings({ "rawtypes", "unchecked" })
 public static Clan create(String clan, String leader) {
-	  String rname = clan.replaceAll("&.", "");
       ArrayList members = new ArrayList();
       members.add(new Member(leader.toLowerCase(), false));
       Clan c = new Clan(clan, leader.toLowerCase(), members, (String)null, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F, Main.config.getInt("settings.default_max"), true, 0);
       clans.put(clan, c);
-      MySQL.execute("INSERT INTO clan_list (name, leader, world, x, y, z, yaw, pitch, maxplayers, pvp, balance, rname) VALUES (\'" + clan + "\', \'" + leader.toLowerCase() + "\', \'null\', \'0\', \'0\', \'0\', \'0\', \'0\', \'" + Main.config.getInt("settings.default_max") + "\', \'1\', \'0\', \'" + rname + "\')");
+      MySQL.execute("INSERT INTO clan_list (name, leader, world, x, y, z, yaw, pitch, maxplayers, pvp, balance) VALUES (\'" + clan + "\', \'" + leader.toLowerCase() + "\', \'null\', \'0\', \'0\', \'0\', \'0\', \'0\', \'" + Main.config.getInt("settings.default_max") + "\', \'1\', \'0\')");
       MySQL.execute("INSERT INTO clan_members (clan, name, isModer) VALUES (\'" + clan + "\', \'" + leader.toLowerCase() + "\', \'0\')");
       return c;
    }
@@ -200,12 +194,6 @@ public static Clan create(String clan, String leader) {
       clans.remove(this.name);
       MySQL.execute("DELETE FROM clan_list WHERE name=\'" + this.name + "\'");
       MySQL.execute("DELETE FROM clan_members WHERE clan=\'" + this.name + "\'");
-   }
-
-
-   public static void remove(String name) {
-      MySQL.execute("DELETE FROM clan_list WHERE name=\'" +  name + "\'");
-      MySQL.execute("DELETE FROM clan_members WHERE clan=\'" +  name + "\'");
    }
 
    public void setLeader(String leader) {
@@ -269,7 +257,7 @@ public static boolean hasMember(String player) {
       MySQL.execute("UPDATE clan_list SET maxplayers=\'" + this.maxplayers + "\' WHERE name=\'" + this.name + "\'");
    }
 
-   @SuppressWarnings({ "rawtypes", "deprecation" })
+   @SuppressWarnings("rawtypes")
 public void broadcast(String message) {
       Iterator var3 = this.members.iterator();
 
