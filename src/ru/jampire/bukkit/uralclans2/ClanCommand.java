@@ -138,23 +138,27 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
             } else if(args.length == 1) {
                sender.sendMessage(Lang.getMessage("command_error1"));
                return true;
-            } else if(userClan != null) {
+            }
+			
+			String rname = args[1].replaceAll("&.", "");
+			
+            if(userClan != null) {
                sender.sendMessage(Lang.getMessage("command_error2"));
                return true;
             } else if(Clan.getClan(args[1]) != null) {
                sender.sendMessage(Lang.getMessage("command_error3"));
                return true;
-            } else if(args[1].length() > Main.config.getInt("settings.max_symbols")) {
+            } else if(rname.length() > Main.config.getInt("settings.max_symbols")) {
                sender.sendMessage(Lang.getMessage("command_error4", new Object[]{Integer.valueOf(Main.config.getInt("settings.max_symbols"))}));
                return true;
-            } else if(args[1].length() < Main.config.getInt("settings.min_symbols")) {
+            } else if(rname.length() < Main.config.getInt("settings.min_symbols")) {
                sender.sendMessage(Lang.getMessage("command_error5", new Object[]{Integer.valueOf(Main.config.getInt("settings.min_symbols"))}));
                return true;
             } else if(!ChatColor.stripColor(args[1].replaceAll("&", "§")).matches(Main.config.getString("settings.clan_regex"))) {
                sender.sendMessage(Lang.getMessage("command_error6"));
                return true;
             } else {
-            	if (Main.config.getInt("settings.cost") != 0) {
+            	if (Main.config.getInt("settings.cost") != 0 && !sender.hasPermission("UralClans2.free")) {
 	            	try {
 						if(!Main.getEconomy().has(sender.getName(), (double)Main.config.getInt("settings.cost"))) {
 						    sender.sendMessage(Lang.getMessage("command_error45"));
@@ -163,6 +167,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
 					} catch (Exception e) {
 						;
 					}
+	            	
 	            	try {
 						Main.getEconomy().withdrawPlayer(sender.getName(), (double)Main.config.getInt("settings.cost"));
 					} catch (Exception e) {
@@ -677,7 +682,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                               return true;
                            }
                         } else if(args[0].equalsIgnoreCase("reload")) {
-                           if(!sender.hasPermission("SpeedCraftClans.admin")) {
+                           if(!sender.hasPermission("UralClans2.reload")) {
                               sender.sendMessage(Lang.getMessage("command_error38"));
                               return true;
                            } else {
@@ -765,7 +770,6 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
 
 						@Override
 							public int compare(Object arg0, Object arg1) {
-								// TODO Автоматически созданная заглушка метода
 								return 0;
 							}
                         });
