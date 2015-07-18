@@ -3,7 +3,9 @@ package ru.jampire.bukkit.uralclans2;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag.State;
+
 import java.util.Iterator;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -18,6 +20,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+
 import ru.jampire.bukkit.uralclans2.Clan;
 import ru.jampire.bukkit.uralclans2.Lang;
 import ru.jampire.bukkit.uralclans2.Main;
@@ -25,6 +28,7 @@ import ru.jampire.bukkit.uralclans2.Member;
 import ru.jampire.bukkit.uralclans2.Request;
 import ru.jampire.bukkit.uralclans2.Warm;
 
+@SuppressWarnings({ "unused", "deprecation" })
 public class EventListener implements Listener {
 
    @EventHandler
@@ -77,13 +81,14 @@ public class EventListener implements Listener {
 
    }
 
-   @EventHandler(
+   @SuppressWarnings("rawtypes")
+@EventHandler(
       priority = EventPriority.HIGHEST
    )
    public void AsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
 	   
 	      if(Clan.hasMember(event.getPlayer().getName()) && event.getFormat().contains("!clantag!")) {
-	     	 event.setFormat(event.getFormat().replace("!clantag!", "§7[" + Clan.getClanByName(event.getPlayer().getName()).getName() + "§7]"));
+	     	 event.setFormat(event.getFormat().replace("!clantag!", Lang.getMessage("clantag_format", new Object[]{Clan.getClanByName(event.getPlayer().getName()).getName()})));
 	       } else {
 	          event.setFormat(event.getFormat().replace("!clantag!", ""));
 	       }
@@ -108,7 +113,6 @@ public class EventListener implements Listener {
 	          }
 
 	          ChatColor c1 = ChatColor.YELLOW;
-	          ChatColor c2 = ChatColor.GRAY;
 	 		if(userClan.isModer(event.getPlayer().getName())) {
 	             c1 = ChatColor.GREEN;
 	          }
@@ -117,7 +121,7 @@ public class EventListener implements Listener {
 	             c1 = ChatColor.DARK_RED;
 	          }
 
-	          event.setFormat(Lang.getMessage("clanchat_format", new Object[]{Lang.getMessage("clan"), c1 + event.getPlayer().getName(), c2 + ": " + "%2$s"}));
+	          event.setFormat(Lang.getMessage("clanchat_format", new Object[]{Lang.getMessage("clan"), c1 + event.getPlayer().getName(),"%2$s"}));
 	          event.setMessage(event.getMessage().substring(1, event.getMessage().length()).replace("§", "&"));
 	       }
 	       
@@ -147,13 +151,12 @@ public class EventListener implements Listener {
 	           }
 
 	           ChatColor c1 = ChatColor.GREEN;
-	           ChatColor c2 = ChatColor.GRAY;
 
 	           if(userClan.hasLeader(event.getPlayer().getName())) {
 	              c1 = ChatColor.DARK_RED;
 	           }
 
-	           event.setFormat(Lang.getMessage("clanchatleader_format", new Object[]{Lang.getMessage("clan"), c1 + event.getPlayer().getName(), c2 + ": " + "%2$s"}));
+	           event.setFormat(Lang.getMessage("clanchatleader_format", new Object[]{Lang.getMessage("clan"), c1 + event.getPlayer().getName(), "%2$s"}));
 	           event.setMessage(event.getMessage().substring(1, event.getMessage().length()).replace("§", "&"));
 	       }
 
