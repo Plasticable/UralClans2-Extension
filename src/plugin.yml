@@ -17,5 +17,5 @@ permissions:
         default: op
     UralClans2.leader:
         default: op
-    SpeedCraftClans.admin:
+    UralClans2.reload:
         default: op
