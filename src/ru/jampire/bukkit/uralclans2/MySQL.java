@@ -4,9 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-
 import org.bukkit.Bukkit;
-
 import ru.jampire.bukkit.uralclans2.Clan;
 import ru.jampire.bukkit.uralclans2.Lang;
 import ru.jampire.bukkit.uralclans2.Logger;
@@ -119,8 +117,7 @@ public class MySQL {
       return rs;
    }
 
-   @SuppressWarnings({ "unchecked", "rawtypes" })
-public static void getClans() {
+   public static void getClans() {
       try {
          resultSet = executeQuery("SELECT * FROM clan_list");
 
@@ -153,8 +150,7 @@ public static void getClans() {
 
    public static void getClansAsync() {
       Bukkit.getScheduler().runTaskTimerAsynchronously(Main.plugin, new Runnable() {
-         @SuppressWarnings({ "unchecked", "rawtypes" })
-		public void run() {
+         public void run() {
             Clan.clans.clear();
 
             try {
