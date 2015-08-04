@@ -86,3 +86,6 @@ UralClans2.free - бесплатное создание клана.
  Facebook: https://www.facebook.com/Ilya.Evtukhov.23
  
  Twitter: https://twitter.com/evtukhov_ilya
+ 
+ © http//fair-craft.ru/
+ 
