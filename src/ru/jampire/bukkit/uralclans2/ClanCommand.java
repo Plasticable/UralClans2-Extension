@@ -36,9 +36,15 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
          Clan userClan = Clan.getClanByName(sender.getName());
          Player user = (Player)sender;
          if(args.length == 0) {
-	        if(!sender.hasPermission("UralClans2.leader")) {
+	        if(sender.hasPermission("UralClans2.leader")) {
 	            if(userClan == null) {
-	               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_create"));
+	            String cost;
+		               if (Main.config.getInt("settings.cost") != 0 && !sender.hasPermission("UralClans2.free")) {
+		            	   cost = Lang.getMessage("cost_create", new Object[]{Main.config.getInt("settings.cost")});
+		                } else {
+		                   cost = Lang.getMessage("cost_create_free");
+		                }
+	               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_create") + cost);
 	            }
 
 	            if(userClan != null && userClan.hasLeader(user.getName())) {
@@ -67,7 +73,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
 
         	}
 	        	
-        	if(!sender.hasPermission("UralClans2.moder")) {
+        	if(sender.hasPermission("UralClans2.moder")) {
 	            if(userClan != null && (userClan.hasLeader(user.getName()) || userClan.isModer(user.getName()))) {
 		        	sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_msg"));
 		        }

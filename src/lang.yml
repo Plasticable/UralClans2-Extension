@@ -127,6 +127,8 @@ ru:
     clanchat_format: '§f[§3%s§f] %s§7: %s'
     clanchatleader_format: '§f[§4%s§f] %s§7: %s'
     clantag_format: '§f[%s§f]'
+    cost_create: '(Стоимость: %s$).'
+    cost_create_free: '(Бесплатно).'
 en:
     clan: 'Clan'
     clan_join: '§a%s joined the clan.'
@@ -256,3 +258,5 @@ en:
     clanchat_format: '§f[§3%s§f] %s§7: %s'
     clanchatleader_format: '§f[§4%s§f] %s§7: %s'
     clantag_format: '§f[%s§f]'
+    cost_create: '(Cost: %s$).'
+    cost_create_free: '(Free).'

@@ -80,6 +80,7 @@ public class EventListener implements Listener {
    @EventHandler(
       priority = EventPriority.HIGHEST
    )
+   
    public void AsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
 	   
 	      if(Clan.hasMember(event.getPlayer().getName()) && event.getFormat().contains("!clantag!")) {
@@ -154,9 +155,10 @@ public class EventListener implements Listener {
 	           event.setFormat(Lang.getMessage("clanchatleader_format", new Object[]{Lang.getMessage("clan"), c1 + event.getPlayer().getName(), "%2$s"}));
 	           event.setMessage(event.getMessage().substring(1, event.getMessage().length()).replace("§", "&"));
 	       }
+   }
 
-}
-   public void PlayerChatEvent(PlayerChatEvent event) {
+
+   public void PlayerChatEvent(AsyncPlayerChatEvent event) {
 	   
 	      if(Clan.hasMember(event.getPlayer().getName()) && event.getFormat().contains("!clantag!")) {
 	     	 event.setFormat(event.getFormat().replace("!clantag!", Lang.getMessage("clantag_format", new Object[]{Clan.getClanByName(event.getPlayer().getName()).getName()})));
@@ -230,6 +232,5 @@ public class EventListener implements Listener {
 	           event.setFormat(Lang.getMessage("clanchatleader_format", new Object[]{Lang.getMessage("clan"), c1 + event.getPlayer().getName(), "%2$s"}));
 	           event.setMessage(event.getMessage().substring(1, event.getMessage().length()).replace("§", "&"));
 	       }
-
-}
+   }
 }
