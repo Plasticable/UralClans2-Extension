@@ -13,5 +13,8 @@ settings:
     min_symbols: 3
     default_max: 30
     max_upgrade: 50
-    cost: 100 #Cost of creating clan. Set 0 to disable.
+    #Cost of creating clan. Set 0 to disable.
+    cost: 100 
     clan_regex: '[а-яА-Яa-zA-Z0-9]*'
+    #The minimum number of players to create a clan house. Set 0 to disable.
+    home_min: 0

@@ -32,7 +32,6 @@ public class EventListener implements Listener {
       if(Request.get(event.getPlayer()) != null) {
          Request.deny(Request.get(event.getPlayer()));
       }
-
    }
 
    @EventHandler(
@@ -49,6 +48,7 @@ public class EventListener implements Listener {
    public void EntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
       if(event.getEntity() instanceof Player) {
          Object d = event.getDamager();
+		 
          if(d instanceof Arrow) {
             d = ((Arrow)d).getShooter();
          } else if(d instanceof ThrownPotion) {
@@ -59,6 +59,7 @@ public class EventListener implements Listener {
             Player damager = (Player)d;
             Player attacker = (Player)event.getEntity();
             Clan userClan = Clan.getClanByName(damager.getName());
+			
             ApplicableRegionSet set = Main.getWG().getRegionManager(attacker.getWorld()).getApplicableRegions(attacker.getLocation());
             if(set.getFlag(DefaultFlag.PVP) == State.ALLOW) {
                return;
@@ -68,169 +69,177 @@ public class EventListener implements Listener {
                if(!userClan.isPvP()) {
                   return;
                }
-
-               damager.sendMessage(Lang.getMessage("damage_in_clan"));
-               event.setCancelled(true);
+            damager.sendMessage(Lang.getMessage("damage_in_clan"));
+            event.setCancelled(true);
             }
          }
       }
-
    }
 
    @EventHandler(
-      priority = EventPriority.HIGHEST
+      priority = EventPriority.LOW
    )
    
    public void AsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
-	   
-	      if(Clan.hasMember(event.getPlayer().getName()) && event.getFormat().contains("!clantag!")) {
-	     	 event.setFormat(event.getFormat().replace("!clantag!", Lang.getMessage("clantag_format", new Object[]{Clan.getClanByName(event.getPlayer().getName()).getName()})));
-	       } else {
-	          event.setFormat(event.getFormat().replace("!clantag!", ""));
-	       }
+ 
+      if(Clan.hasMember(event.getPlayer().getName()) && event.getFormat().contains("!clantag!")) {
+         event.setFormat(event.getFormat().replace("!clantag!", Lang.getMessage("clantag_format", new Object[]{Clan.getClanByName(event.getPlayer().getName()).getName()})));
+      } else {
+         event.setFormat(event.getFormat().replace("!clantag!", ""));
+      }
 
-	       if(event.getMessage().startsWith("%") && event.getMessage().length() > 1) {
-	          Clan userClan = Clan.getClanByName(event.getPlayer().getName());
-	          if(userClan == null) {
-	             event.getPlayer().sendMessage(Lang.getMessage("command_error7"));
-	             event.setCancelled(true);
-	             return;
-	          }
+      if(event.getMessage().startsWith("%") && event.getMessage().length() > 1) {
+         Clan userClan = Clan.getClanByName(event.getPlayer().getName());
+		 
+         if(userClan == null) {
+            event.getPlayer().sendMessage(Lang.getMessage("command_error7"));
+            event.setCancelled(true);
+            return;
+         }
 
-	          event.getRecipients().clear();
-	          Iterator var4 = userClan.getMembers().iterator();
+         event.getRecipients().clear();
+         Iterator var4 = userClan.getMembers().iterator();
 
-	          while(var4.hasNext()) {
-	             Member c = (Member)var4.next();
-	             OfflinePlayer pl = Bukkit.getOfflinePlayer(c.getName());
-	             if(pl.isOnline()) {
-	                event.getRecipients().add(pl.getPlayer());
-	             }
-	          }
+         while(var4.hasNext()) {
+            Member c = (Member)var4.next();
+            OfflinePlayer pl = Bukkit.getOfflinePlayer(c.getName());
+			
+            if(pl.isOnline()) {
+               event.getRecipients().add(pl.getPlayer());
+            }
+         }
 
-	          ChatColor c1 = ChatColor.YELLOW;
-	 		if(userClan.isModer(event.getPlayer().getName())) {
-	             c1 = ChatColor.GREEN;
-	          }
+         ChatColor c1 = ChatColor.YELLOW;
+   
+         if(userClan.isModer(event.getPlayer().getName())) {
+            c1 = ChatColor.GREEN;
+         }
 
-	          if(userClan.hasLeader(event.getPlayer().getName())) {
-	             c1 = ChatColor.DARK_RED;
-	          }
+         if(userClan.hasLeader(event.getPlayer().getName())) {
+            c1 = ChatColor.DARK_RED;
+         }
 
-	          event.setFormat(Lang.getMessage("clanchat_format", new Object[]{Lang.getMessage("clan"), c1 + event.getPlayer().getName(),"%2$s"}));
-	          event.setMessage(event.getMessage().substring(1, event.getMessage().length()).replace("§", "&"));
-	       }
-	       
-	       if(event.getMessage().startsWith("*") && event.getMessage().length() > 1) {
-	           Clan userClan = Clan.getClanByName(event.getPlayer().getName());
-	           if(userClan == null) {
-	              event.getPlayer().sendMessage(Lang.getMessage("command_error7"));
-	              event.setCancelled(true);
-	              return;
-	           } else if(!userClan.isModer(event.getPlayer().getName()) && !userClan.hasLeader(event.getPlayer().getName())) {
-	               event.getPlayer().sendMessage(Lang.getMessage("command_error44"));
-	               event.setCancelled(true);
-	               return;
-	           }
+         event.setFormat(Lang.getMessage("clanchat_format", new Object[]{Lang.getMessage("clan"), c1 + event.getPlayer().getName(),"%2$s"}));
+         event.setMessage(event.getMessage().substring(1, event.getMessage().length()).replace("ยง", "&"));
+      }
+     
+      if(event.getMessage().startsWith("*") && event.getMessage().length() > 1) {
+         Clan userClan = Clan.getClanByName(event.getPlayer().getName());
+		 
+         if(userClan == null) {
+            event.getPlayer().sendMessage(Lang.getMessage("command_error7"));
+            event.setCancelled(true);
+            return;
+         } else if(!userClan.isModer(event.getPlayer().getName()) && !userClan.hasLeader(event.getPlayer().getName())) {
+            event.getPlayer().sendMessage(Lang.getMessage("command_error44"));
+            event.setCancelled(true);
+            return;
+         }
 
-	           event.getRecipients().clear();
-	           Iterator var4 = userClan.getMembers().iterator();
+         event.getRecipients().clear();
+         Iterator var4 = userClan.getMembers().iterator();
 
-	           while(var4.hasNext()) {
-	              Member c = (Member)var4.next();
-	              OfflinePlayer pl = Bukkit.getOfflinePlayer(c.getName());
-	              if(pl.isOnline()) {
-	             	 if (userClan.isModer(pl.getPlayer().getName()) || userClan.hasLeader(pl.getPlayer().getName())) {
-	             		 event.getRecipients().add(pl.getPlayer());
-	             	 }
-	              }
-	           }
+         while(var4.hasNext()) {
+            Member c = (Member)var4.next();
+            OfflinePlayer pl = Bukkit.getOfflinePlayer(c.getName());
+			
+            if(pl.isOnline()) {
+               if (userClan.isModer(pl.getPlayer().getName()) || userClan.hasLeader(pl.getPlayer().getName())) {
+                  event.getRecipients().add(pl.getPlayer());
+               }
+            }
+         }
 
-	           ChatColor c1 = ChatColor.GREEN;
+         ChatColor c1 = ChatColor.GREEN;
 
-	           if(userClan.hasLeader(event.getPlayer().getName())) {
-	              c1 = ChatColor.DARK_RED;
-	           }
+         if(userClan.hasLeader(event.getPlayer().getName())) {
+            c1 = ChatColor.DARK_RED;
+         }
 
-	           event.setFormat(Lang.getMessage("clanchatleader_format", new Object[]{Lang.getMessage("clan"), c1 + event.getPlayer().getName(), "%2$s"}));
-	           event.setMessage(event.getMessage().substring(1, event.getMessage().length()).replace("§", "&"));
-	       }
+         event.setFormat(Lang.getMessage("clanchatleader_format", new Object[]{Lang.getMessage("clan"), c1 + event.getPlayer().getName(), "%2$s"}));
+         event.setMessage(event.getMessage().substring(1, event.getMessage().length()).replace("ยง", "&"));
+      }
    }
 
 
-   public void PlayerChatEvent(AsyncPlayerChatEvent event) {
-	   
-	      if(Clan.hasMember(event.getPlayer().getName()) && event.getFormat().contains("!clantag!")) {
-	     	 event.setFormat(event.getFormat().replace("!clantag!", Lang.getMessage("clantag_format", new Object[]{Clan.getClanByName(event.getPlayer().getName()).getName()})));
-	       } else {
-	          event.setFormat(event.getFormat().replace("!clantag!", ""));
-	       }
+   public void PlayerChatEvent(PlayerChatEvent event) {
+ 
+      if(Clan.hasMember(event.getPlayer().getName()) && event.getFormat().contains("!clantag!")) {
+         event.setFormat(event.getFormat().replace("!clantag!", Lang.getMessage("clantag_format", new Object[]{Clan.getClanByName(event.getPlayer().getName()).getName()})));
+      } else {
+         event.setFormat(event.getFormat().replace("!clantag!", ""));
+      }
 
-	       if(event.getMessage().startsWith("%") && event.getMessage().length() > 1) {
-	          Clan userClan = Clan.getClanByName(event.getPlayer().getName());
-	          if(userClan == null) {
-	             event.getPlayer().sendMessage(Lang.getMessage("command_error7"));
-	             event.setCancelled(true);
-	             return;
-	          }
+      if(event.getMessage().startsWith("%") && event.getMessage().length() > 1) {
+         Clan userClan = Clan.getClanByName(event.getPlayer().getName());
+		 
+         if(userClan == null) {
+            event.getPlayer().sendMessage(Lang.getMessage("command_error7"));
+            event.setCancelled(true);
+            return;
+         }
 
-	          event.getRecipients().clear();
-	          Iterator var4 = userClan.getMembers().iterator();
+         event.getRecipients().clear();
+         Iterator var4 = userClan.getMembers().iterator();
 
-	          while(var4.hasNext()) {
-	             Member c = (Member)var4.next();
-	             OfflinePlayer pl = Bukkit.getOfflinePlayer(c.getName());
-	             if(pl.isOnline()) {
-	                event.getRecipients().add(pl.getPlayer());
-	             }
-	          }
+         while(var4.hasNext()) {
+            Member c = (Member)var4.next();
+            OfflinePlayer pl = Bukkit.getOfflinePlayer(c.getName());
+			
+            if(pl.isOnline()) {
+               event.getRecipients().add(pl.getPlayer());
+            }
+         }
 
-	          ChatColor c1 = ChatColor.YELLOW;
-	 		if(userClan.isModer(event.getPlayer().getName())) {
-	             c1 = ChatColor.GREEN;
-	          }
+         ChatColor c1 = ChatColor.YELLOW;
+   
+         if(userClan.isModer(event.getPlayer().getName())) {
+            c1 = ChatColor.GREEN;
+         }
 
-	          if(userClan.hasLeader(event.getPlayer().getName())) {
-	             c1 = ChatColor.DARK_RED;
-	          }
+         if(userClan.hasLeader(event.getPlayer().getName())) {
+            c1 = ChatColor.DARK_RED;
+         }
 
-	          event.setFormat(Lang.getMessage("clanchat_format", new Object[]{Lang.getMessage("clan"), c1 + event.getPlayer().getName(),"%2$s"}));
-	          event.setMessage(event.getMessage().substring(1, event.getMessage().length()).replace("§", "&"));
-	       }
-	       
-	       if(event.getMessage().startsWith("*") && event.getMessage().length() > 1) {
-	           Clan userClan = Clan.getClanByName(event.getPlayer().getName());
-	           if(userClan == null) {
-	              event.getPlayer().sendMessage(Lang.getMessage("command_error7"));
-	              event.setCancelled(true);
-	              return;
-	           } else if(!userClan.isModer(event.getPlayer().getName()) && !userClan.hasLeader(event.getPlayer().getName())) {
-	               event.getPlayer().sendMessage(Lang.getMessage("command_error44"));
-	               event.setCancelled(true);
-	               return;
-	           }
+         event.setFormat(Lang.getMessage("clanchat_format", new Object[]{Lang.getMessage("clan"), c1 + event.getPlayer().getName(),"%2$s"}));
+         event.setMessage(event.getMessage().substring(1, event.getMessage().length()).replace("ยง", "&"));
+      }
+     
+      if(event.getMessage().startsWith("*") && event.getMessage().length() > 1) {
+         Clan userClan = Clan.getClanByName(event.getPlayer().getName());
+		 
+         if(userClan == null) {
+            event.getPlayer().sendMessage(Lang.getMessage("command_error7"));
+            event.setCancelled(true);
+            return;
+         } else if(!userClan.isModer(event.getPlayer().getName()) && !userClan.hasLeader(event.getPlayer().getName())) {
+            event.getPlayer().sendMessage(Lang.getMessage("command_error44"));
+            event.setCancelled(true);
+            return;
+         }
 
-	           event.getRecipients().clear();
-	           Iterator var4 = userClan.getMembers().iterator();
+         event.getRecipients().clear();
+         Iterator var4 = userClan.getMembers().iterator();
 
-	           while(var4.hasNext()) {
-	              Member c = (Member)var4.next();
-	              OfflinePlayer pl = Bukkit.getOfflinePlayer(c.getName());
-	              if(pl.isOnline()) {
-	             	 if (userClan.isModer(pl.getPlayer().getName()) || userClan.hasLeader(pl.getPlayer().getName())) {
-	             		 event.getRecipients().add(pl.getPlayer());
-	             	 }
-	              }
-	           }
+         while(var4.hasNext()) {
+            Member c = (Member)var4.next();
+            OfflinePlayer pl = Bukkit.getOfflinePlayer(c.getName());
+			
+            if(pl.isOnline()) {
+               if (userClan.isModer(pl.getPlayer().getName()) || userClan.hasLeader(pl.getPlayer().getName())) {
+                  event.getRecipients().add(pl.getPlayer());
+               }
+            }
+         }
 
-	           ChatColor c1 = ChatColor.GREEN;
+         ChatColor c1 = ChatColor.GREEN;
 
-	           if(userClan.hasLeader(event.getPlayer().getName())) {
-	              c1 = ChatColor.DARK_RED;
-	           }
+         if(userClan.hasLeader(event.getPlayer().getName())) {
+            c1 = ChatColor.DARK_RED;
+         }
 
-	           event.setFormat(Lang.getMessage("clanchatleader_format", new Object[]{Lang.getMessage("clan"), c1 + event.getPlayer().getName(), "%2$s"}));
-	           event.setMessage(event.getMessage().substring(1, event.getMessage().length()).replace("§", "&"));
-	       }
+         event.setFormat(Lang.getMessage("clanchatleader_format", new Object[]{Lang.getMessage("clan"), c1 + event.getPlayer().getName(), "%2$s"}));
+         event.setMessage(event.getMessage().substring(1, event.getMessage().length()).replace("ยง", "&"));
+      }
    }
 }

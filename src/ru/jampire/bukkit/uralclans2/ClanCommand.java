@@ -160,7 +160,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
             } else if(rname.length() < Main.config.getInt("settings.min_symbols")) {
                sender.sendMessage(Lang.getMessage("command_error5", new Object[]{Integer.valueOf(Main.config.getInt("settings.min_symbols"))}));
                return true;
-            } else if(!ChatColor.stripColor(args[1].replaceAll("&", "§")).matches(Main.config.getString("settings.clan_regex"))) {
+            } else if(!ChatColor.stripColor(args[1].replaceAll("&", "ยง")).matches(Main.config.getString("settings.clan_regex"))) {
                sender.sendMessage(Lang.getMessage("command_error6"));
                return true;
             } else {
@@ -500,7 +500,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                         return true;
                      }
                   } else if(args[0].equalsIgnoreCase("sethome")) {
-                     if(!sender.hasPermission("UralClans2.control")) {
+                     if(!sender.hasPermission("UralClans2.leader")) {
                         sender.sendMessage(Lang.getMessage("command_error43"));
                         return true;
                      } else {
@@ -514,6 +514,9 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                         } else if(!Main.getWG().canBuild(var26, var26.getLocation())) {
                            sender.sendMessage(Lang.getMessage("command_error30"));
                            return true;
+                        } else if(userClan.getMembers().size()<Main.config.getInt("settings.home_min")) {
+                            sender.sendMessage(Lang.getMessage("command_error46", new Object[]{Integer.valueOf(Main.config.getInt("settings.home_min"))}));
+                            return true;
                         } else {
                            userClan.setHome(var26.getWorld().getName(), var26.getLocation().getX(), var26.getLocation().getY(), var26.getLocation().getZ(), var26.getLocation().getYaw(), var26.getLocation().getPitch());
                            userClan.broadcast(Lang.getMessage("clan_sethome", new Object[]{sender.getName()}));
@@ -760,35 +763,32 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                         sender.sendMessage(Lang.getMessage("command_error42"));
                         return true;
                      } else {
-                        HashMap sorted = new HashMap();
-                        i = Clan.clans.values().iterator();
+                         HashMap sorted = new HashMap();
+                         i = Clan.clans.values().iterator();
 
-                        while(i.hasNext()) {
-                           Clan entries = (Clan)i.next();
-                           sorted.put(entries, Integer.valueOf(entries.getMembers().size()));
-                        }
+                         while(i.hasNext()) {
+                            Clan entries = (Clan)i.next();
+                            sorted.put(entries, Integer.valueOf(entries.getMembers().size()));
+                         }
 
-                        LinkedList var24 = new LinkedList(sorted.entrySet());
-                        Collections.sort(var24, new Comparator() {
-                           public int compare(Entry o1, Entry o2) {
-                              return ((Integer)o2.getValue()).compareTo((Integer)o1.getValue());
-                           }
-
-						@Override
-							public int compare(Object arg0, Object arg1) {
-								return 0;
+                         LinkedList var24 = new LinkedList(sorted.entrySet());
+                         Collections.sort(var24, new Comparator <Entry>() {
+                        	 
+							@Override
+							public int compare(Entry o1, Entry o2) {
+								return ((Integer)o2.getValue()).compareTo((Integer)o1.getValue());
 							}
-                        });
-                        var28 = 1;
+                         });
+                         var28 = 1;
 
-                        for(Iterator var11 = var24.iterator(); var11.hasNext(); ++var28) {
-                           Entry entry = (Entry)var11.next();
-                           Clan c = (Clan)entry.getKey();
-                           sender.sendMessage(Lang.getMessage("command_top_1", new Object[]{Integer.valueOf(var28), c.getName(), c.getLeader(), entry.getValue()}));
-                           if(var28 == 10) {
-                              break;
-                           }
-                        }
+                         for(Iterator var11 = var24.iterator(); var11.hasNext(); ++var28) {
+                            Entry entry = (Entry)var11.next();
+                            Clan c = (Clan)entry.getKey();
+                            sender.sendMessage(Lang.getMessage("command_top_1", new Object[]{Integer.valueOf(var28), c.getName(), c.getLeader(), entry.getValue()}));
+                            if(var28 == 10) {
+                               break;
+                            }
+                         }
 
                         return true;
                      }

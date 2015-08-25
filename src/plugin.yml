@@ -1,7 +1,7 @@
 name: UralClans2
 main: ru.jampire.bukkit.uralclans2.Main
 author: Jampire (Appended Ilya_Evtukhov)
-version: 2.2.3
+version: 2.2.5
 depend: [WorldGuard, WorldEdit]
 commands:
     clan:
@@ -16,6 +16,4 @@ permissions:
     UralClans2.moder:
         default: op
     UralClans2.leader:
-        default: op
-    SpeedCraftClans.admin:
         default: op
