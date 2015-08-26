@@ -160,7 +160,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
             } else if(rname.length() < Main.config.getInt("settings.min_symbols")) {
                sender.sendMessage(Lang.getMessage("command_error5", new Object[]{Integer.valueOf(Main.config.getInt("settings.min_symbols"))}));
                return true;
-            } else if(!ChatColor.stripColor(args[1].replaceAll("&", "ยง")).matches(Main.config.getString("settings.clan_regex"))) {
+            } else if(!ChatColor.stripColor(args[1].replaceAll("&", "§")).matches(Main.config.getString("settings.clan_regex"))) {
                sender.sendMessage(Lang.getMessage("command_error6"));
                return true;
             } else {
