@@ -19,5 +19,5 @@ settings:
     #The minimum number of players to create a clan house. Set 0 to disable.
     home_min: 0
     #Resolution attacks when enabled PVP WorldGuard. Set 0 to disable or 1 to enable.
-    pvp: 1
-vesion_config: 1
+    pvp: 0
+version_config: 1
