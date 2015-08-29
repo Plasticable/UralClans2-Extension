@@ -18,3 +18,6 @@ settings:
     clan_regex: '[а-яА-Яa-zA-Z0-9]*'
     #The minimum number of players to create a clan house. Set 0 to disable.
     home_min: 0
+    #Resolution attacks when enabled PVP WorldGuard. Set 0 to disable or 1 to enable.
+    pvp: 1
+vesion_config: 1

@@ -14,12 +14,15 @@ import java.nio.file.Paths;
 import org.apache.commons.lang.SystemUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import ru.jampire.bukkit.uralclans2.Lang;
 import ru.jampire.bukkit.uralclans2.Main;
 
 public class ConfigHandler {
+	
+   public static FileConfiguration langversion;
 
    public static void winConvert(File f) throws Exception {
       Path p = Paths.get(f.toURI());
@@ -42,6 +45,7 @@ public static void configInit() {
       byte[] buff;
       int n;
       Object buff1;
+      
       if(!fconfig.exists()) {
          lang = Main.class.getResourceAsStream("/config.yml");
 
@@ -88,5 +92,63 @@ public static void configInit() {
 
       Main.config = YamlConfiguration.loadConfiguration(fconfig);
       Lang.load(YamlConfiguration.loadConfiguration(flang));
+      
+      if (Main.config.getInt("version_config") != 1) {
+    	  
+    	  fconfig.renameTo(new File(Main.plugin.getDataFolder(), "config.yml."+System.currentTimeMillis() / 1000L+".bak"));
+    	  	
+          lang = Main.class.getResourceAsStream("/config.yml");
+
+          try {
+             e = new FileOutputStream(fconfig);
+             buff = new byte[65536];
+
+             while((n = lang.read(buff)) > 0) {
+                e.write(buff, 0, n);
+                e.flush();
+             }
+
+             e.close();
+             buff1 = null;
+             if(SystemUtils.IS_OS_WINDOWS) {
+                winConvert(fconfig);
+             }
+             
+             Logger.info("config.yml updated");
+             
+          } catch (Exception var7) {
+             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Error: " + var7);
+          }  
+      }
+
+      langversion = YamlConfiguration.loadConfiguration(flang);
+      
+      if (langversion.getInt("version_lang") != 1) {
+    	  
+    	  flang.renameTo(new File(Main.plugin.getDataFolder(), "lang.yml."+System.currentTimeMillis() / 1000L+".bak"));
+    	  	
+          lang = Main.class.getResourceAsStream("/lang.yml");
+
+          try {
+             e = new FileOutputStream(flang);
+             buff = new byte[65536];
+
+             while((n = lang.read(buff)) > 0) {
+                e.write(buff, 0, n);
+                e.flush();
+             }
+
+             e.close();
+             buff1 = null;
+             if(SystemUtils.IS_OS_WINDOWS) {
+                winConvert(flang);
+             }
+             
+             Logger.info("lang.yml updated");
+             
+          } catch (Exception var7) {
+             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Error: " + var7);
+          }  
+      }
    }
 }

@@ -3,7 +3,9 @@ package ru.jampire.bukkit.uralclans2;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag.State;
+
 import java.util.Iterator;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -18,6 +20,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.plugin.Plugin;
+
 import ru.jampire.bukkit.uralclans2.Clan;
 import ru.jampire.bukkit.uralclans2.Lang;
 import ru.jampire.bukkit.uralclans2.Main;
@@ -61,7 +65,7 @@ public class EventListener implements Listener {
             Clan userClan = Clan.getClanByName(damager.getName());
 			
             ApplicableRegionSet set = Main.getWG().getRegionManager(attacker.getWorld()).getApplicableRegions(attacker.getLocation());
-            if(set.getFlag(DefaultFlag.PVP) == State.ALLOW) {
+            if(set.getFlag(DefaultFlag.PVP) == State.ALLOW && Main.config.getInt("settings.pvp") == 1) {
                return;
             }
 
@@ -75,18 +79,12 @@ public class EventListener implements Listener {
          }
       }
    }
-
+   
    @EventHandler(
-      priority = EventPriority.LOW
+      priority = EventPriority.HIGHEST
    )
    
    public void AsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
- 
-      if(Clan.hasMember(event.getPlayer().getName()) && event.getFormat().contains("!clantag!")) {
-         event.setFormat(event.getFormat().replace("!clantag!", Lang.getMessage("clantag_format", new Object[]{Clan.getClanByName(event.getPlayer().getName()).getName()})));
-      } else {
-         event.setFormat(event.getFormat().replace("!clantag!", ""));
-      }
 
       if(event.getMessage().startsWith("%") && event.getMessage().length() > 1) {
          Clan userClan = Clan.getClanByName(event.getPlayer().getName());
@@ -163,12 +161,6 @@ public class EventListener implements Listener {
 
 
    public void PlayerChatEvent(PlayerChatEvent event) {
- 
-      if(Clan.hasMember(event.getPlayer().getName()) && event.getFormat().contains("!clantag!")) {
-         event.setFormat(event.getFormat().replace("!clantag!", Lang.getMessage("clantag_format", new Object[]{Clan.getClanByName(event.getPlayer().getName()).getName()})));
-      } else {
-         event.setFormat(event.getFormat().replace("!clantag!", ""));
-      }
 
       if(event.getMessage().startsWith("%") && event.getMessage().length() > 1) {
          Clan userClan = Clan.getClanByName(event.getPlayer().getName());
@@ -241,5 +233,29 @@ public class EventListener implements Listener {
          event.setFormat(Lang.getMessage("clanchatleader_format", new Object[]{Lang.getMessage("clan"), c1 + event.getPlayer().getName(), "%2$s"}));
          event.setMessage(event.getMessage().substring(1, event.getMessage().length()).replace("ยง", "&"));
       }
+   }
+   
+   @EventHandler(
+      priority = EventPriority.LOW
+   )
+   
+   public void AsyncPlayerChatTagEvent(AsyncPlayerChatEvent event) {
+	   
+      if(Clan.hasMember(event.getPlayer().getName()) && event.getFormat().contains("!clantag!")) {
+         event.setFormat(event.getFormat().replace("!clantag!", Lang.getMessage("clantag_format", new Object[]{Clan.getClanByName(event.getPlayer().getName()).getName()})));
+      } else {
+          event.setFormat(event.getFormat().replace("!clantag!", ""));
+      }
+	   
+   }
+
+   public void PlayerChatTagEvent(PlayerChatEvent event) {
+	   
+      if(Clan.hasMember(event.getPlayer().getName()) && event.getFormat().contains("!clantag!")) {
+         event.setFormat(event.getFormat().replace("!clantag!", Lang.getMessage("clantag_format", new Object[]{Clan.getClanByName(event.getPlayer().getName()).getName()})));
+      } else {
+         event.setFormat(event.getFormat().replace("!clantag!", ""));
+      }
+   	
    }
 }

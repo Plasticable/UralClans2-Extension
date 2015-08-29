@@ -258,7 +258,4 @@ en:
     command_msg_format: '§f[§b%s§f] [§b%s§f] %s§f: %s'
     command_broadcast_format: '§f[§b%s§f] §a%s'
     clanchat_format: '§f[§3%s§f] %s§7: %s'
-    clanchatleader_format: '§f[§4%s§f] %s§7: %s'
-    clantag_format: '§f[%s§f]'
-    cost_create: '(Cost: %s$).'
-    cost_create_free: '(Free).'
+version_lang: 1
