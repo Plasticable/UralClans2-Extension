@@ -63,18 +63,18 @@ public class EventListener implements Listener {
             Player damager = (Player)d;
             Player attacker = (Player)event.getEntity();
             Clan userClan = Clan.getClanByName(damager.getName());
-			
+
             ApplicableRegionSet set = Main.getWG().getRegionManager(attacker.getWorld()).getApplicableRegions(attacker.getLocation());
             if(set.getFlag(DefaultFlag.PVP) == State.ALLOW && Main.config.getInt("settings.pvp") == 1) {
                return;
             }
 
-            if(Clan.hasMember(damager.getName()) && Clan.hasMember(attacker.getName()) && userClan.hasClanMember(attacker.getName())) {
+            if(Clan.hasMember(damager.getName()) && Clan.hasMember(attacker.getName()) && userClan.hasClanMember(attacker.getName()) && attacker.getName() != damager.getName()) {
                if(!userClan.isPvP()) {
                   return;
                }
-            damager.sendMessage(Lang.getMessage("damage_in_clan"));
-            event.setCancelled(true);
+               damager.sendMessage(Lang.getMessage("damage_in_clan"));
+               event.setCancelled(true);
             }
          }
       }
@@ -85,6 +85,12 @@ public class EventListener implements Listener {
    )
    
    public void AsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
+	   
+      if(Clan.hasMember(event.getPlayer().getName()) && event.getFormat().contains("!clantag!")) {
+          event.setFormat(event.getFormat().replace("!clantag!", Lang.getMessage("clantag_format", new Object[]{Clan.getClanByName(event.getPlayer().getName()).getName()})));
+      } else {
+	      event.setFormat(event.getFormat().replace("!clantag!", ""));
+	  }
 
       if(event.getMessage().startsWith("%") && event.getMessage().length() > 1) {
          Clan userClan = Clan.getClanByName(event.getPlayer().getName());
@@ -118,7 +124,7 @@ public class EventListener implements Listener {
          }
 
          event.setFormat(Lang.getMessage("clanchat_format", new Object[]{Lang.getMessage("clan"), c1 + event.getPlayer().getName(),"%2$s"}));
-         event.setMessage(event.getMessage().substring(1, event.getMessage().length()).replace("ยง", "&"));
+         event.setMessage(event.getMessage().substring(1, event.getMessage().length()).replace("§", "&"));
       }
      
       if(event.getMessage().startsWith("*") && event.getMessage().length() > 1) {
@@ -155,14 +161,20 @@ public class EventListener implements Listener {
          }
 
          event.setFormat(Lang.getMessage("clanchatleader_format", new Object[]{Lang.getMessage("clan"), c1 + event.getPlayer().getName(), "%2$s"}));
-         event.setMessage(event.getMessage().substring(1, event.getMessage().length()).replace("ยง", "&"));
+         event.setMessage(event.getMessage().substring(1, event.getMessage().length()).replace("§", "&"));
       }
    }
 
 
    public void PlayerChatEvent(PlayerChatEvent event) {
+	   
+       if(Clan.hasMember(event.getPlayer().getName()) && event.getFormat().contains("!clantag!")) {
+           event.setFormat(event.getFormat().replace("!clantag!", Lang.getMessage("clantag_format", new Object[]{Clan.getClanByName(event.getPlayer().getName()).getName()})));
+       } else {
+	       event.setFormat(event.getFormat().replace("!clantag!", ""));
+	   }
 
-      if(event.getMessage().startsWith("%") && event.getMessage().length() > 1) {
+       if(event.getMessage().startsWith("%") && event.getMessage().length() > 1) {
          Clan userClan = Clan.getClanByName(event.getPlayer().getName());
 		 
          if(userClan == null) {
@@ -194,7 +206,7 @@ public class EventListener implements Listener {
          }
 
          event.setFormat(Lang.getMessage("clanchat_format", new Object[]{Lang.getMessage("clan"), c1 + event.getPlayer().getName(),"%2$s"}));
-         event.setMessage(event.getMessage().substring(1, event.getMessage().length()).replace("ยง", "&"));
+         event.setMessage(event.getMessage().substring(1, event.getMessage().length()).replace("§", "&"));
       }
      
       if(event.getMessage().startsWith("*") && event.getMessage().length() > 1) {
@@ -231,7 +243,7 @@ public class EventListener implements Listener {
          }
 
          event.setFormat(Lang.getMessage("clanchatleader_format", new Object[]{Lang.getMessage("clan"), c1 + event.getPlayer().getName(), "%2$s"}));
-         event.setMessage(event.getMessage().substring(1, event.getMessage().length()).replace("ยง", "&"));
+         event.setMessage(event.getMessage().substring(1, event.getMessage().length()).replace("§", "&"));
       }
    }
    

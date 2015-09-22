@@ -93,7 +93,7 @@ public static void configInit() {
       Main.config = YamlConfiguration.loadConfiguration(fconfig);
       Lang.load(YamlConfiguration.loadConfiguration(flang));
       
-      if (Main.config.getInt("version_config") != 1) {
+      if (Main.config.getInt("version_config") != 2) {
     	  
     	  fconfig.renameTo(new File(Main.plugin.getDataFolder(), "config.yml."+System.currentTimeMillis() / 1000L+".bak"));
     	  	
@@ -115,6 +115,7 @@ public static void configInit() {
              }
              
              Logger.info("config.yml updated");
+             ConfigHandler.configInit();
              
           } catch (Exception var7) {
              Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Error: " + var7);
@@ -123,7 +124,7 @@ public static void configInit() {
 
       langversion = YamlConfiguration.loadConfiguration(flang);
       
-      if (langversion.getInt("version_lang") != 1) {
+      if (langversion.getInt("version_lang") != 2) {
     	  
     	  flang.renameTo(new File(Main.plugin.getDataFolder(), "lang.yml."+System.currentTimeMillis() / 1000L+".bak"));
     	  	
@@ -145,6 +146,7 @@ public static void configInit() {
              }
              
              Logger.info("lang.yml updated");
+             ConfigHandler.configInit();
              
           } catch (Exception var7) {
              Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Error: " + var7);

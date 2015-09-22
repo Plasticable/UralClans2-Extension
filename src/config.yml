@@ -14,10 +14,12 @@ settings:
     default_max: 30
     max_upgrade: 50
     #Cost of creating clan. Set 0 to disable.
-    cost: 100 
+    create_cost: 0 
+    #Cost of upgrading clan. Set 0 to disable.
+    upgrade_cost: 0
     clan_regex: '[а-яА-Яa-zA-Z0-9]*'
     #The minimum number of players to create a clan house. Set 0 to disable.
     home_min: 0
     #Resolution attacks when enabled PVP WorldGuard. Set 0 to disable or 1 to enable.
-    pvp: 0
-version_config: 1
+    pvp: 1
+version_config: 2

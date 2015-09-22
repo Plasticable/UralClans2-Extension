@@ -25,91 +25,109 @@ import ru.jampire.bukkit.uralclans2.Warm;
 public class ClanCommand implements CommandExecutor {
 
    @SuppressWarnings({ "rawtypes", "unused", "deprecation", "unchecked" })
-public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+      if(args.length == 0) {
+          if(sender.hasPermission("UralClans2.reload"))
+        	  sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_reload"));
+	  } else if(args[0].equalsIgnoreCase("reload")) {
+         if(!sender.hasPermission("UralClans2.reload")) {
+		    sender.sendMessage(Lang.getMessage("command_error38"));
+         } else {
+		    ConfigHandler.configInit();
+		    sender.sendMessage(Lang.getMessage("command_reload_1"));
+         }
+	  }
+      
       if(!(sender instanceof Player)) {
-         sender.sendMessage(Lang.getMessage("command_error0"));
          return true;
-      } else if(!sender.hasPermission("UralClans2.use")) {
+      } else if(!sender.hasPermission("UralClans2.clan")) {
          sender.sendMessage(Lang.getMessage("command_error38"));
          return true;
       } else {
          Clan userClan = Clan.getClanByName(sender.getName());
          Player user = (Player)sender;
          if(args.length == 0) {
-	        if(sender.hasPermission("UralClans2.leader")) {
-	            if(userClan == null) {
-	            String cost;
-		               if (Main.config.getInt("settings.cost") != 0 && !sender.hasPermission("UralClans2.free")) {
-		            	   cost = Lang.getMessage("cost_create", new Object[]{Main.config.getInt("settings.cost")});
-		                } else {
-		                   cost = Lang.getMessage("cost_create_free");
-		                }
-	               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_create") + cost);
-	            }
+            if(userClan == null && sender.hasPermission("UralClans2.create")) {
+               String cost;
+	           if (Main.config.getInt("settings.create_cost") != 0 && !sender.hasPermission("UralClans2.free.create")) {
+	              cost = Lang.getMessage("cost", new Object[]{Main.config.getInt("settings.create_cost")});
+	           } else {
+	              cost = Lang.getMessage("cost_free");
+	           }
+               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_create") + cost);
+            }
 
-	            if(userClan != null && userClan.hasLeader(user.getName())) {
-	               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_leader"));
-	            }
+            if(userClan != null && sender.hasPermission("UralClans2.leader") && userClan.hasLeader(user.getName())) {
+               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_leader"));
+            }
 	            
-	            if(userClan != null && userClan.hasLeader(user.getName())) {
-	               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_addmoder"));
-	            }
+            if(userClan != null && sender.hasPermission("UralClans2.addmoder") && userClan.hasLeader(user.getName())) {
+               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_addmoder"));
+            }
 
-	            if(userClan != null && userClan.hasLeader(user.getName())) {
-	               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_delmoder"));
-	            }
+            if(userClan != null && sender.hasPermission("UralClans2.delmoder") && userClan.hasLeader(user.getName())) {
+               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_delmoder"));
+            }
 
-	            if(userClan != null && userClan.hasLeader(user.getName())) {
-	               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_take"));
-	            }
+            if(userClan != null && sender.hasPermission("UralClans2.take") && userClan.hasLeader(user.getName())) {
+               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_take"));
+            }
 
-	            if(userClan != null && userClan.hasLeader(user.getName())) {
-	               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_sethome"));
-	            }
+            if(userClan != null && sender.hasPermission("UralClans2.sethome") && userClan.hasLeader(user.getName())) {
+            	sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_sethome"));
+            }
 
-	            if(userClan != null && userClan.hasLeader(user.getName())) {
-	               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_removehome"));
-	            }
+            if(userClan != null && sender.hasPermission("UralClans2.removehome") && userClan.hasLeader(user.getName())) {
+               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_removehome"));
+            }
+	        
+            if(userClan != null && sender.hasPermission("UralClans2.msg") && (userClan.hasLeader(user.getName()) || userClan.isModer(user.getName()))) {
+	        	sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_msg"));
+	        }
 
-        	}
-	        	
-        	if(sender.hasPermission("UralClans2.moder")) {
-	            if(userClan != null && (userClan.hasLeader(user.getName()) || userClan.isModer(user.getName()))) {
-		        	sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_msg"));
-		        }
+            if(userClan != null && sender.hasPermission("UralClans2.invite") && (userClan.hasLeader(user.getName()) || userClan.isModer(user.getName()))) {
+               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_invite"));
+            }
 
-	            if(userClan != null && (userClan.hasLeader(user.getName()) || userClan.isModer(user.getName()))) {
-	               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_invite"));
-	            }
-	
-	            if(userClan != null && (userClan.hasLeader(user.getName()) || userClan.isModer(user.getName()))) {
-	               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_kick"));
-	            }
+            if(userClan != null && sender.hasPermission("UralClans2.kick") && (userClan.hasLeader(user.getName()) || userClan.isModer(user.getName()))) {
+               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_kick"));
+            }
 
-	            if(userClan != null && (userClan.hasLeader(user.getName()) || userClan.isModer(user.getName()))) {
-	               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_upgrade"));
-	            }
+            if(userClan != null && sender.hasPermission("UralClans2.upgrade") && (userClan.hasLeader(user.getName()) || userClan.isModer(user.getName()))) {
+                String cost;
+ 	           if (Main.config.getInt("settings.upgrade_cost") != 0) {
+ 	              cost = Lang.getMessage("cost", new Object[]{Main.config.getInt("settings.upgrade_cost")});
+ 	           } else {
+ 	              cost = Lang.getMessage("cost_free");
+ 	           }
+               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_upgrade") + cost);
+            }
 
-	            if(userClan != null && (userClan.hasLeader(user.getName()) || userClan.isModer(user.getName()))) {
-	               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_pvp"));
-	            }
-        	}
+            if(userClan != null && sender.hasPermission("UralClans2.pvp") && (userClan.hasLeader(user.getName()) || userClan.isModer(user.getName()))) {
+               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_pvp"));
+            }
         	
-            if(userClan != null) {
+            if(userClan != null && sender.hasPermission("UralClans2.info")) {
                sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_info"));
             }
     		
-            if(userClan != null && userClan.hasLeader(user.getName())) {
+            if(userClan != null && sender.hasPermission("UralClans2.disband") && userClan.hasLeader(user.getName())) {
                sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_disband"));
             }
 
-            if(userClan != null) {
+            if(userClan != null && sender.hasPermission("UralClans2.online")) {
                sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_online"));
             }
 
-            sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_list"));
-            sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_top"));
-            if(userClan != null && !userClan.hasLeader(user.getName())) {
+            if(sender.hasPermission("UralClans2.list")) {
+               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_list"));
+            }
+            
+            if(sender.hasPermission("UralClans2.top")) {
+               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_top"));
+            }
+            
+            if(userClan != null && sender.hasPermission("UralClans2.leave") && !userClan.hasLeader(user.getName())) {
                if(userClan.isModer(user.getName())) {
                   sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_leave1"));
                } else {
@@ -117,28 +135,27 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                }
             }
 
-            if(userClan != null) {
+            if(userClan != null && sender.hasPermission("UralClans2.home")) {
                sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_home"));
             }
 
-            if(userClan != null) {
+            if(userClan != null && sender.hasPermission("UralClans2.balance")) {
                sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_balance"));
             }
 
-            if(userClan != null) {
+            if(userClan != null && sender.hasPermission("UralClans2.deposit")) {
                sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_deposit"));
             }
             
             if(sender.hasPermission("UralClans2.admin")) {
                sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_admin"));
-               sender.sendMessage(ChatColor.YELLOW + "/" + label + " " + Lang.getMessage("command_reload"));
             }
 
             return true;
          } else if(args.length <= 0) {
             return true;
          } else if(args[0].equalsIgnoreCase("create")) {
-			if(!sender.hasPermission("UralClans2.leader")) {
+			if(!sender.hasPermission("UralClans2.create")) {
                sender.sendMessage(Lang.getMessage("command_error43"));
                return true;
             } else if(args.length == 1) {
@@ -164,28 +181,25 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                sender.sendMessage(Lang.getMessage("command_error6"));
                return true;
             } else {
-            	if (Main.config.getInt("settings.cost") != 0 && !sender.hasPermission("UralClans2.free")) {
+            	if (Main.config.getInt("settings.create_cost") != 0 && !sender.hasPermission("UralClans2.free.create")) {
 	            	try {
-						if(!Main.getEconomy().has(sender.getName(), (double)Main.config.getInt("settings.cost"))) {
+						if(!Main.getEconomy().has(sender.getName(), (double)Main.config.getInt("settings.create_cost"))) {
 						    sender.sendMessage(Lang.getMessage("command_error45"));
 						    return true;
 						 }
-					} catch (Exception e) {
-						;
-					}
+					} catch (Exception e) { }
 	            	
 	            	try {
-						Main.getEconomy().withdrawPlayer(sender.getName(), (double)Main.config.getInt("settings.cost"));
-					} catch (Exception e) {
-						;
-					}
+						Main.getEconomy().withdrawPlayer(sender.getName(), (double)Main.config.getInt("settings.create_cost"));
+					} catch (Exception e) { }
+            	} else {
             	}
                userClan = Clan.create(args[1], sender.getName());
                userClan.broadcast(Lang.getMessage("clan_created", new Object[]{Clan.getClanByName(sender.getName()).getName()}));
                return true;
             }
          } else if(args[0].equalsIgnoreCase("disband")) {
-            if(!sender.hasPermission("UralClans2.use")) {
+            if(!sender.hasPermission("UralClans2.disband")) {
                sender.sendMessage(Lang.getMessage("command_error38"));
                return true;
             } else if(userClan == null) {
@@ -203,7 +217,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
             int var25;
             StringBuilder var30;
             if(args[0].equalsIgnoreCase("msg")) {
-               if(!sender.hasPermission("UralClans2.moder")) {
+               if(!sender.hasPermission("UralClans2.msg")) {
                   sender.sendMessage(Lang.getMessage("command_error43"));
                   return true;
                } else if(userClan == null) {
@@ -245,7 +259,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                   }
                }
             } else if(args[0].equalsIgnoreCase("online")) {
-               if(!sender.hasPermission("UralClans2.use")) {
+               if(!sender.hasPermission("UralClans2.online")) {
                   sender.sendMessage(Lang.getMessage("command_error38"));
                   return true;
                } else if(userClan == null) {
@@ -271,7 +285,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
             } else {
                Iterator i;
                if(args[0].equalsIgnoreCase("info")) {
-                  if(!sender.hasPermission("UralClans2.use")) {
+                  if(!sender.hasPermission("UralClans2.info")) {
                      sender.sendMessage(Lang.getMessage("command_error38"));
                      return true;
                   } else if(userClan == null) {
@@ -296,7 +310,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                      return true;
                   }
                } else if(args[0].equalsIgnoreCase("addmoder")) {
-                  if(!sender.hasPermission("UralClans2.leader")) {
+                  if(!sender.hasPermission("UralClans2.addmoder")) {
                      sender.sendMessage(Lang.getMessage("command_error43"));
                      return true;
                   } else if(userClan == null) {
@@ -323,7 +337,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                      return true;
                   }
                } else if(args[0].equalsIgnoreCase("delmoder")) {
-                  if(!sender.hasPermission("UralClans2.leader")) {
+                  if(!sender.hasPermission("UralClans2.delmoder")) {
                      sender.sendMessage(Lang.getMessage("command_error43"));
                      return true;
                   } else if(userClan == null) {
@@ -347,7 +361,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                      return true;
                   }
                } else if(args[0].equalsIgnoreCase("invite")) {
-                  if(!sender.hasPermission("UralClans2.moder")) {
+                  if(!sender.hasPermission("UralClans2.invite")) {
                      sender.sendMessage(Lang.getMessage("command_error43"));
                      return true;
                   } else if(args.length == 1) {
@@ -380,7 +394,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                      return true;
                   }
                } else if(args[0].equalsIgnoreCase("kick")) {
-                  if(!sender.hasPermission("UralClans2.moder")) {
+                  if(!sender.hasPermission("UralClans2.kick")) {
                      sender.sendMessage(Lang.getMessage("command_error43"));
                      return true;
                   } else if(args.length == 1) {
@@ -408,7 +422,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                   int var23;
                   int var28;
                   if(args[0].equalsIgnoreCase("list")) {
-                     if(!sender.hasPermission("UralClans2.use")) {
+                     if(!sender.hasPermission("UralClans2.list")) {
                         sender.sendMessage(Lang.getMessage("command_error38"));
                         return true;
                      } else if(Clan.clans.size() == 0) {
@@ -447,7 +461,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                         return true;
                      }
                   } else if(args[0].equalsIgnoreCase("leave")) {
-                     if(!sender.hasPermission("UralClans2.use")) {
+                     if(!sender.hasPermission("UralClans2.leave")) {
                         sender.sendMessage(Lang.getMessage("command_error38"));
                         return true;
                      } else if(userClan == null) {
@@ -468,7 +482,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                         return true;
                      }
                   } else if(args[0].equalsIgnoreCase("home")) {
-                     if(!sender.hasPermission("UralClans2.use")) {
+                     if(!sender.hasPermission("UralClans2.home")) {
                         sender.sendMessage(Lang.getMessage("command_error38"));
                         return true;
                      } else if(userClan == null) {
@@ -482,7 +496,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                         return true;
                      }
                   } else if(args[0].equalsIgnoreCase("removehome")) {
-                     if(!sender.hasPermission("UralClans2.leader")) {
+                     if(!sender.hasPermission("UralClans2.removehome")) {
                         sender.sendMessage(Lang.getMessage("command_error43"));
                         return true;
                      } else if(userClan == null) {
@@ -500,7 +514,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                         return true;
                      }
                   } else if(args[0].equalsIgnoreCase("sethome")) {
-                     if(!sender.hasPermission("UralClans2.leader")) {
+                     if(!sender.hasPermission("UralClans2.sethome")) {
                         sender.sendMessage(Lang.getMessage("command_error43"));
                         return true;
                      } else {
@@ -566,7 +580,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                            return true;
                         }
 
-                        if(!sender.hasPermission("UralClans2.leader")) {
+                        if(!sender.hasPermission("UralClans2.take")) {
                            sender.sendMessage(Lang.getMessage("command_error43"));
                            return true;
                         } else if(userClan == null) {
@@ -613,7 +627,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                            return true;
                         }
 
-                        if(!sender.hasPermission("UralClans2.use")) {
+                        if(!sender.hasPermission("UralClans2.balance")) {
                            sender.sendMessage(Lang.getMessage("command_error38"));
                            return true;
                         } else if(userClan == null) {
@@ -630,7 +644,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                            return true;
                         }
 
-                        if(!sender.hasPermission("UralClans2.use")) {
+                        if(!sender.hasPermission("UralClans2.deposit")) {
                            sender.sendMessage(Lang.getMessage("command_error38"));
                            return true;
                         } else if(userClan == null) {
@@ -673,7 +687,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                         }
                      } else if(!args[0].equalsIgnoreCase("top")) {
                         if(args[0].equalsIgnoreCase("upgrade")) {
-                           if(!sender.hasPermission("UralClans2.moder")) {
+                           if(!sender.hasPermission("UralClans2.upgrade")) {
                               sender.sendMessage(Lang.getMessage("command_error38"));
                               return true;
                            } else if(userClan == null) {
@@ -686,21 +700,22 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                               sender.sendMessage(Lang.getMessage("command_error36"));
                               return true;
                            } else {
+                           	 if (Main.config.getInt("settings.upgrade_cost") != 0) {
+                                try {
+                                   if(userClan.getBalance() < (int) Main.config.getInt("settings.upgrade_cost")) {
+                                      sender.sendMessage(Lang.getMessage("clan_take_3"));
+            						  return true;
+            					   }
+            				    } catch (Exception e) {  }
+            	            	
+                                userClan.setBalance(userClan.getBalance() - Main.config.getInt("settings.upgrade_cost"));
+                        	  }
                               userClan.upgrade(1);
                               userClan.broadcast(Lang.getMessage("clan_upgrade", new Object[]{sender.getName()}));
                               return true;
                            }
-                        } else if(args[0].equalsIgnoreCase("reload")) {
-                           if(!sender.hasPermission("UralClans2.reload")) {
-                              sender.sendMessage(Lang.getMessage("command_error38"));
-                              return true;
-                           } else {
-                              ConfigHandler.configInit();
-                              sender.sendMessage(Lang.getMessage("command_reload_1"));
-                              return true;
-                           }
                         } else if(args[0].equalsIgnoreCase("pvp")) {
-                           if(!sender.hasPermission("UralClans2.moder")) {
+                           if(!sender.hasPermission("UralClans2.pvp")) {
                               sender.sendMessage(Lang.getMessage("command_error43"));
                               return true;
                            } else if(userClan == null) {
@@ -729,8 +744,20 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                               if(args.length > 1) {
                                  return true;
                               }
+                              
+                           } else if(args[0].equalsIgnoreCase("reload")) {
+                        	   
+                        	   return true;
+                        	   
                            } else {
+      
                               if(args[0].equalsIgnoreCase("accept")) {
+                            	  
+                                 if(!sender.hasPermission("UralClans2.accept")) {
+                                    sender.sendMessage(Lang.getMessage("command_error38"));
+                                    return true;
+                                 }
+                                
                                  if(Request.get((Player)sender) == null) {
                                     sender.sendMessage(Lang.getMessage("command_error40"));
                                     return true;
@@ -742,6 +769,12 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                               }
 
                               if(args[0].equalsIgnoreCase("deny")) {
+                            	  
+                                 if(!sender.hasPermission("UralClans2.deny")) {
+                                    sender.sendMessage(Lang.getMessage("command_error38"));
+                                    return true;
+                                 }
+                                 
                                  if(Request.get((Player)sender) == null) {
                                     sender.sendMessage(Lang.getMessage("command_error40"));
                                     return true;
@@ -756,7 +789,7 @@ public boolean onCommand(CommandSender sender, Command command, String label, St
                            sender.sendMessage(Lang.getMessage("command_error41"));
                            return true;
                         }
-                     } else if(!sender.hasPermission("UralClans2.use")) {
+                     } else if(!sender.hasPermission("UralClans2.top")) {
                         sender.sendMessage(Lang.getMessage("command_error38"));
                         return true;
                      } else if(Clan.clans.size() == 0) {
