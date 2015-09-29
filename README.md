@@ -65,9 +65,7 @@
 Внимание, просле обновления плагина обновляйте конфиги!
 
 Права:
-
-UralClans2.use:
-
+   - /clan - UralClans2.clan - основная команда;
    - /clan list - UralClans2.list - [страница] - Показать спиок кланов;
    - /clan leave - UralClans2.leave - Выход из клана;
    - /clan home - UralClans2.home - Телепортирование на клановый дом;
