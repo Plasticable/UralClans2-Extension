@@ -88,6 +88,8 @@
    - /clan addmoder - UralClans2.addmoder [игрок] - Дать права модератора клана (доступно лидеру клана);
    - /clan delmoder - UralClans2.delmoder [игрок] - Забрать права модератора клана (доступно лидеру клана);
    - /clan reload - UralClans2.reload - Перезапуск конфигурации плагина;
+   - /clan accept - UralClans2.accept - Принять приглашение в клан;
+   - /clan deny - UralClans2.deny - Отказаться от приглашения в клан;
    - UralClans2.free.create - бесплатное создание клана.
 
 %сообщение - отправка сообщения в клановый чат
