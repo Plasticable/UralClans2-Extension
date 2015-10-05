@@ -93,7 +93,7 @@ public static void configInit() {
       Main.config = YamlConfiguration.loadConfiguration(fconfig);
       Lang.load(YamlConfiguration.loadConfiguration(flang));
       
-      if (Main.config.getInt("version_config") != 2) {
+      if (Main.config.getInt("version_config") != 3) {
     	  
     	  fconfig.renameTo(new File(Main.plugin.getDataFolder(), "config.yml."+System.currentTimeMillis() / 1000L+".bak"));
     	  	

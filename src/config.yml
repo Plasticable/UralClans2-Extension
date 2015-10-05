@@ -22,4 +22,8 @@ settings:
     home_min: 0
     #Resolution attacks when enabled PVP WorldGuard. Set 0 to disable or 1 to enable.
     pvp: 1
-version_config: 2
+    #Enabling leader chats
+    leader_chat: true
+    #Enabling clan chats
+    clan_chat: true
+version_config: 3
