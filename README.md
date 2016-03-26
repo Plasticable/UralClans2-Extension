@@ -114,7 +114,6 @@ Qiwi: 380662873199
  
  Facebook: https://www.facebook.com/Ilya.Evtukhov.23
  
- Twitter: https://twitter.com/evtukhov_ilya
+ Twitter: https://twitter.com/Ilya_Evtukhov
  
- Site: http//fair-craft.ru/
  
