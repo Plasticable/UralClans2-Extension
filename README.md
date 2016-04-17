@@ -1,6 +1,8 @@
 # UralClans2-Extension
 Так как оригинальный UralClans2(http://dev.bukkit.org/bukkit-plugins/uralclans2/) не обновляется, я решил его немного дополнить.
 
+Скачивать тут https://github.com/Ilya-Evtukhov/UralClans2-Extension/releases
+
 Что нового:
 
 2.0:
